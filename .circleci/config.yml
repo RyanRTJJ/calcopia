@@ -4,9 +4,6 @@ orbs:
 workflows:
   node-tests:
     jobs:
-<<<<<<< Updated upstream
-      - node/test
-=======
       build:
         working_directory: ~/repo
 
@@ -30,5 +27,4 @@ workflows:
           
           - run: npm build
 
-          - run: npm netlify:deploy
->>>>>>> Stashed changes
+          # - run: npm netlify:deploy
