@@ -1,0 +1,30 @@
+.imageBackground {
+    background-image: url(../images/thiebaud4.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    background-attachment: fixed;
+    justify-content: center;
+    align-items: center;
+}
+
+.sideCol {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 2;
+}
+
+.middleCol {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 4;
+}
+
+.space {
+    display: flex;
+    flex: 1
+}

@@ -1,0 +1,9 @@
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.1);
+    box-shadow: inset 0px 0px 2000px rgba(255,255,255,0.5);
+    justify-content: center;
+    backdrop-filter: blur(20px) brightness(120%) contrast(70%);
+}

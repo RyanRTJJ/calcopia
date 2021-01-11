@@ -1,0 +1,41 @@
+.layoutContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #eeeeee;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    height: 30px;
+}
+.layoutContainer:hover {
+    background-color: #cad3fd;
+}
+.emojiAndName {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+.emojiContainer {
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.nameContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-weight: bold;
+}
+.information {
+    display: flex;
+}
+.macroStat {
+    display: flex;
+    font-size: small;
+    width: 60px;
+}
+.invisibleContainer {
+    visibility: hidden;
+}

@@ -28,6 +28,13 @@
   color: #61dafb;
 }
 
+body > #root > div {
+  display: flex;
+  height: 100vh;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
