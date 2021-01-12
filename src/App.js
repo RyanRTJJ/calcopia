@@ -18,6 +18,7 @@ function App() {
   useEffect(() => {
     const checkLoggedIn = async () => {
       let token = localStorage.getItem("auth-token");
+      console.log("CI Flag on master.");
       if (token === null) {
         localStorage.setItem("auth-token", "");
         token = "";
