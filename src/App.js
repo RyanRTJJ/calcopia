@@ -46,7 +46,7 @@ function App() {
             // No user logged in. Do nothing.
             new Promise(r => setTimeout(r, 1000)).then(() => {
               setIsLoading(false);
-            })
+            });
           }
         })
         .catch(err => {
