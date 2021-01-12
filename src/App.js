@@ -47,6 +47,12 @@ function App() {
               setIsLoading(false);
             })
           }
+        })
+        .catch(err => {
+          console.log(err);
+          new Promise(r => setTimeout(r, 1000)).then(() => {
+            setIsLoading(false);
+          })
         });
     }
 
