@@ -24,6 +24,10 @@ const usersRouter = require('./routes/users');
 app.use('/foodinfo', foodInfoRouter);
 app.use('/users', usersRouter);
 
+app.get('/', (req, res) => {
+    res.send("Hello from APIs");
+});
+
 app.listen(port, () => {
     console.log(`Server is runing on port : ${port}`);
 })
