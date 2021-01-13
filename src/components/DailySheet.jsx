@@ -69,6 +69,7 @@ const DailySheet = (props) => {
         const newTotals = getTotals();
         setTotals(newTotals);
         props.handleChangeTotals(newTotals);
+        handleSave();
     }, [consumedFood]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const getTotals = () => {
@@ -112,7 +113,7 @@ const DailySheet = (props) => {
             setConsumedFood([...consumedFood, foodWithQuant]);
         }
         // Need to update backend once user accounts have been created.
-        handleSave();
+        // Done in useeffect
     }
 
     const decrementItem = (foodItem) => {
@@ -129,7 +130,7 @@ const DailySheet = (props) => {
             setConsumedFood(newConsumedFood);
         }
         // Save to backend
-        handleSave();
+        // Done in useefect
     }
 
     const toggleViewingMode = () => {
