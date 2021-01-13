@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT //process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -23,6 +23,8 @@ const usersRouter = require('./routes/users');
 // The following strings are collection names as per MongoDB
 app.use('/foodinfo', foodInfoRouter);
 app.use('/users', usersRouter);
+
+app.get('/', (req, res) => {res.send("Hello from Express.")});
 
 app.listen(port, () => {
     console.log(`Server is runing on port : ${port}`);
