@@ -3,12 +3,14 @@ import CardShadow from '../components/CardShadow';
 import styles from "../styles/registerscreen.module.css";
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
+import { useHistory } from 'react-router-dom';
 import { API_URL } from "../constants";
 
 const RegisterScreen = () => {
     const [emailErrorMessage, setEmailErrorMessage] = useState("");
     const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-    
+    const history = useHistory();
+
     const handleRegister = () => {
         // Clear all errorMessages first.
         setEmailErrorMessage("");
@@ -43,14 +45,14 @@ const RegisterScreen = () => {
                                 axios.post(API_URL + "/users/add", {
                                     "email": email, "password": hashedPassword
                                 }).then(() => {
-                                    console.log("New user added!");
-                                })
+                                    history.push("/");
+                                }).catch(err => console.log(err))
                             })
                         })
                     }
                 }
             })
-            .catch(() => {console.log('oaidfjaiojsf')});
+            .catch((err) => {console.log(err)});
     }
     return (
         <div className={styles.imageBackground}>
