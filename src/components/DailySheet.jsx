@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useStateWithCallbackLazy } from 'use-state-with-callback';
 import CardShadow from "./CardShadow";
 import FoodItem from "./FoodItem";
 import SearchBox from "./SearchBox";
@@ -12,7 +13,7 @@ import UserContext from "../context/UserContext";
 
 const DailySheet = (props) => {
     const [foodDictionary, setfoodDictionary] = useState([]);
-    const [consumedFood, setConsumedFood] = useState([]);
+    const [consumedFood, setConsumedFood] = useStateWithCallbackLazy([]);
     const [totals, setTotals] = useState();
     const [viewingMode, setViewingMode] = useState('expanded');
     const { userData, setUserData } = useContext(UserContext);
@@ -49,6 +50,7 @@ const DailySheet = (props) => {
                             })
                             Promise.all(promises).then(data => {
                                 console.log(data);
+                                console.log("Setting in step 2");
                                 setConsumedFood(data);
                             })
                         }
@@ -69,7 +71,6 @@ const DailySheet = (props) => {
         const newTotals = getTotals();
         setTotals(newTotals);
         props.handleChangeTotals(newTotals);
-        handleSave();
     }, [consumedFood]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const getTotals = () => {
@@ -105,15 +106,20 @@ const DailySheet = (props) => {
         if (tempIndex > -1) {
             var newConsumedFood = [...consumedFood];
             newConsumedFood[tempIndex].quantity += 1;
-            setConsumedFood(newConsumedFood);
+            setConsumedFood(newConsumedFood, () => {
+                console.log("then save");
+                handleSave(newConsumedFood)});
         }
         else {
             // If not already in list, just add.
             const foodWithQuant = {...foodItem, quantity: 1};
-            setConsumedFood([...consumedFood, foodWithQuant]);
+            setConsumedFood([...consumedFood, foodWithQuant], (consumedFood) => {
+                console.log("then save");
+                console.log(consumedFood);
+                handleSave([...consumedFood, foodWithQuant])});
         }
         // Need to update backend once user accounts have been created.
-        // Done in useeffect
+        
     }
 
     const decrementItem = (foodItem) => {
@@ -122,12 +128,17 @@ const DailySheet = (props) => {
         var newConsumedFood = [...consumedFood];
         if (consumedFood[tempIndex].quantity > 1) {
             newConsumedFood[tempIndex].quantity -= 1;
-            setConsumedFood(newConsumedFood);
+            setConsumedFood(newConsumedFood, () => {
+                console.log("then save");
+                handleSave(newConsumedFood);
+            });
         }
         else {
             // Count === 1, delete from list.
             newConsumedFood.splice(tempIndex, 1);
-            setConsumedFood(newConsumedFood);
+            setConsumedFood(newConsumedFood, () => { 
+                handleSave(newConsumedFood) 
+            });
         }
         // Save to backend
         // Done in useefect
@@ -142,22 +153,20 @@ const DailySheet = (props) => {
         }
     }
     
-    const handleSave = () => {
+    const handleSave = (localConsumedFood) => {
         console.log("saving...");
-        console.log(consumedFood);
+        console.log(localConsumedFood);
 
-        var foodEntries = [...consumedFood];
+        var foodEntries = [...localConsumedFood];
         foodEntries.forEach((foodEntry, index) => {
             foodEntries[index] = { mongoID: foodEntry._id, quantity: foodEntry.quantity };
         })
-        console.log(foodEntries);
 
         var dailySheet = { date: sheetDate.date.toDateString().substring(0,15), food_entries: foodEntries };
         var dailySheets = userData.daily_sheets ? 
             [...userData.daily_sheets.filter(sheet => (sheet.date !== dailySheet.date)), dailySheet] : 
             [dailySheet];
 
-        console.log(dailySheet.date);
         const newDetails = {
             id: userData.user.id,
             email: userData.user.email,
