@@ -3,6 +3,7 @@ import styles from "../styles/loginscreen.module.css";
 import CardShadow from "../components/CardShadow";
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from "../constants";
 import UserContext from "../context/UserContext";
 
 const LoginScreen = () => {
@@ -28,7 +29,7 @@ const LoginScreen = () => {
             return;
         }
 
-        axios.post('http://localhost:5000/users/login', { email: email, password: password })
+        axios.post(API_URL + "/users/login", { email: email, password: password })
             .then(res => {
                 if (res.data.value === -1) {
                     // -1 is the code for invalid email

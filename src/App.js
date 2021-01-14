@@ -6,6 +6,7 @@ import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import UserContext from "./context/UserContext";
+import { API_URL } from "./constants";
 import axios from 'axios';
 
 function App() {
@@ -18,12 +19,12 @@ function App() {
   useEffect(() => {
     const checkLoggedIn = async () => {
       let token = localStorage.getItem("auth-token");
-      console.log("CI Flag on master.");
+      console.log(API_URL);
       if (token === null) {
         localStorage.setItem("auth-token", "");
         token = "";
       }
-      axios.post("http://localhost:5000/users/tokenIsValid",
+      axios.post(API_URL + "/users/tokenIsValid",
         null, 
         { headers: { "x-auth-token": token }}
       )
@@ -31,7 +32,7 @@ function App() {
           console.log("User logged in: " + tokenRes.data);
           if (tokenRes.data) {
             // If yes, there's a user logged in. Who is it?:
-            axios.get("http://localhost:5000/users/", { headers: { "x-auth-token": token }})
+            axios.get(API_URL + "/users/", { headers: { "x-auth-token": token }})
               .then(user => {
                 setUserData({ token: token, user: user.data });
                 new Promise(r => setTimeout(r, 1000)).then(() => {

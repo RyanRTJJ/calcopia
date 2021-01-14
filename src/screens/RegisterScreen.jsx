@@ -3,6 +3,7 @@ import CardShadow from '../components/CardShadow';
 import styles from "../styles/registerscreen.module.css";
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
+import { API_URL } from "../constants";
 
 const RegisterScreen = () => {
     const [emailErrorMessage, setEmailErrorMessage] = useState("");
@@ -23,7 +24,7 @@ const RegisterScreen = () => {
         }
 
 
-        axios.post('http://localhost:5000/users/checkemail', { email: email })
+        axios.post(API_URL + "/users/checkemail", { email: email })
             .then(res => {
                 console.log(res.data);
                 if (res.data.value === -1) {
@@ -39,7 +40,7 @@ const RegisterScreen = () => {
                     else {
                         bcrypt.genSalt().then(salt => {
                             bcrypt.hash(password, salt).then(hashedPassword => {
-                                axios.post('http://localhost:5000/users/add', {
+                                axios.post(API_URL + "/users/add", {
                                     "email": email, "password": hashedPassword
                                 }).then(() => {
                                     console.log("New user added!");
