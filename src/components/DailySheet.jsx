@@ -10,7 +10,7 @@ import { faListUl, faGripVertical } from '@fortawesome/free-solid-svg-icons'
 import { DatePicker } from 'react-rainbow-components';
 import { useHistory } from 'react-router-dom';
 import UserContext from "../context/UserContext";
-import API_URL from "../constants";
+import { API_URL } from "../constants";
 
 const DailySheet = (props) => {
     const [foodDictionary, setfoodDictionary] = useState([]);
