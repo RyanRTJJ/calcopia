@@ -10,6 +10,7 @@ import { faListUl, faGripVertical } from '@fortawesome/free-solid-svg-icons'
 import { DatePicker } from 'react-rainbow-components';
 import { useHistory } from 'react-router-dom';
 import UserContext from "../context/UserContext";
+import API_URL from "../constants";
 
 const DailySheet = (props) => {
     const [foodDictionary, setfoodDictionary] = useState([]);
@@ -29,12 +30,12 @@ const DailySheet = (props) => {
     
     useEffect(()  => {
         // Step 1) Initialize food dictionary.
-        axios.get('http://localhost:5000/foodinfo')
+        axios.get(API_URL + '/foodinfo')
             .then(res => {
                 setfoodDictionary(res.data.map(food => food));
 
                 // Step 2) Grab sheet data.
-                axios.get('http://localhost:5000/users/', { headers: { "x-auth-token": userData.token }})
+                axios.get(API_URL + '/users/', { headers: { "x-auth-token": userData.token }})
                     .then(res => {
                         const todaysDailySheet = res.data.daily_sheets.filter(sheet => sheet.date === sheetDate.date.toDateString().substring(0,15));
                         console.log(todaysDailySheet);
@@ -43,7 +44,7 @@ const DailySheet = (props) => {
                             
                             //Attempt 4
                             const promises = loadConsumedFood.map(someFood => {
-                                return axios.post('http://localhost:5000/foodinfo/getOneConsumedFood', 
+                                return axios.post(API_URL + '/foodinfo/getOneConsumedFood', 
                                 { id: someFood.mongoID, quantity: someFood.quantity },
                                 { headers: { "x-auth-token": userData.token }})
                                     .then(res => res.data)
@@ -181,7 +182,7 @@ const DailySheet = (props) => {
           return;
         }
 
-        axios.post("http://localhost:5000/users/updateSheets",
+        axios.post(API_URL + "/users/updateSheets",
             newDetails, 
             { headers: { "x-auth-token": token }}
             )

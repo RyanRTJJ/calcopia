@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import CardShadow from '../components/CardShadow';
 import styles from "../styles/registerscreen.module.css";
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 import { useHistory } from 'react-router-dom';
+import UserContext from "../context/UserContext";
 import { API_URL } from "../constants";
 
 const RegisterScreen = () => {
     const [emailErrorMessage, setEmailErrorMessage] = useState("");
     const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-    const history = useHistory();
+    const {userData, setUserData} = useContext(UserContext);
+    let history = useHistory();
 
-    const handleRegister = () => {
+    const handleRegister = (e) => {
+        e.preventDefault();
         // Clear all errorMessages first.
         setEmailErrorMessage("");
         setPasswordErrorMessage("");
@@ -25,6 +28,7 @@ const RegisterScreen = () => {
             return;
         }
 
+        console.log("Checkpoint1");
 
         axios.post(API_URL + "/users/checkemail", { email: email })
             .then(res => {
@@ -45,7 +49,10 @@ const RegisterScreen = () => {
                                 axios.post(API_URL + "/users/add", {
                                     "email": email, "password": hashedPassword
                                 }).then(() => {
+                                    console.log("reseted user data");
+                                    localStorage.setItem("auth-token", undefined);
                                     history.push("/");
+                                    
                                 }).catch(err => console.log(err))
                             })
                         })
@@ -73,7 +80,7 @@ const RegisterScreen = () => {
                         <small className={styles.centralize} style={{marginBottom: 0}}>You'll be able to save your nutritional history and analyze it using this account!</small>
                     </div>
 
-                    <div className={styles.formFields}>
+                    <form onSubmit={handleRegister} className={styles.formFields} >
                         <div className={styles.fieldRow}>
                             <div className={styles.inputLabel}>Email: </div>
                             <div className={styles.inputErrorPair}>
@@ -94,10 +101,10 @@ const RegisterScreen = () => {
                                 <small style={{fontWeight: "bold", visibility: 'visible'}}>{passwordErrorMessage}</small>
                                 </div>
                         </div>
-                        <div onClick={handleRegister} className={styles.registerButton}>
+                        <button type="submit" className={styles.registerButton}>
                             Register
-                        </div>
-                    </div>
+                        </button>
+                    </form>
 
                 </CardShadow>
         </div>

@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import {Route, BrowserRouter as Router} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import LoadingScreen from "./screens/LoadingScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -22,7 +23,6 @@ function App() {
       console.log(API_URL);
       if (token === null) {
         localStorage.setItem("auth-token", "");
-        token = "";
       }
       axios.post(API_URL + "/users/tokenIsValid",
         null, 
@@ -45,6 +45,7 @@ function App() {
           }
           else {
             // No user logged in. Do nothing.
+            console.log("hey");
             new Promise(r => setTimeout(r, 1000)).then(() => {
               setIsLoading(false);
             });
